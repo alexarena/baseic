@@ -32,8 +32,10 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       # Trusted publishing requires npm >= 11.5.1; Node 22 LTS still ships
-      # with npm 10.x, so bump it explicitly.
-      - run: npm install -g npm@latest
+      # with npm 10.x, so bump it explicitly. --force avoids the
+      # "Cannot find module 'promise-retry'" failure caused by npm
+      # rewriting its own globally-installed package mid-install.
+      - run: npm install -g npm@latest --force
 
       # Most pushes won't bump the version, so check first and bail early
       # rather than installing + building for nothing.
