@@ -1,12 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { z } from "zod";
-import {
-  table,
-  columns,
-  foreignKey,
-  queryBuilder,
-} from "../src/index.ts";
+import { table, columns, foreignKey, queryBuilder } from "../src/index.ts";
 
 const Accounts = table({
   name: "accounts",
