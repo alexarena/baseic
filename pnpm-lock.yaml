@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  packages/sql:
     dependencies:
       zod:
         specifier: ^3.23.0

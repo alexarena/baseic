@@ -1,0 +1,53 @@
+{
+  "name": "@baseic/sql",
+  "version": "0.1.0",
+  "description": "A tiny, type-safe SQLite query builder for throwaway report databases.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "example": "node examples/financials.ts",
+    "test": "node --test test/*.test.ts"
+  },
+  "keywords": [
+    "sqlite",
+    "query-builder",
+    "zod"
+  ],
+  "author": "Alex Arena",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexarena/baseic.git",
+    "directory": "packages/sql"
+  },
+  "bugs": {
+    "url": "https://github.com/alexarena/baseic/issues"
+  },
+  "homepage": "https://github.com/alexarena/baseic/tree/main/packages/sql#readme",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsdown": "^0.9.0",
+    "typescript": "^5.7.0"
+  }
+}

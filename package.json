@@ -1,33 +1,16 @@
 {
-  "name": "baseic",
-  "version": "0.1.0",
-  "description": "A tiny, type-safe SQLite query builder for throwaway report databases.",
+  "name": "baseic-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Workspace root for the @baseic/* packages.",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "typecheck": "tsc --noEmit",
-    "example": "node examples/financials.ts",
-    "test": "node --test test/*.test.ts"
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "example": "pnpm --filter @baseic/sql example"
   },
-  "keywords": [
-    "sqlite",
-    "query-builder",
-    "zod"
-  ],
-  "author": "Alex Arena",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -37,13 +20,5 @@
     "url": "https://github.com/alexarena/baseic/issues"
   },
   "homepage": "https://github.com/alexarena/baseic#readme",
-  "packageManager": "pnpm@10.33.0",
-  "dependencies": {
-    "zod": "^3.23.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.10.0",
-    "tsdown": "^0.9.0",
-    "typescript": "^5.7.0"
-  }
+  "packageManager": "pnpm@10.33.0"
 }

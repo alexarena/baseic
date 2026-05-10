@@ -39,5 +39,6 @@ jobs:
 
       # No NODE_AUTH_TOKEN — npm detects the GitHub OIDC environment and
       # exchanges the workflow's id-token with the registry directly.
-      - name: Publish
-        run: npm publish --access public --provenance
+      # Each workspace package needs its own trusted publisher entry on npm.
+      - name: Publish @baseic/sql
+        run: npm publish --workspace=@baseic/sql --access public --provenance
