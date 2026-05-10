@@ -1,6 +1,6 @@
 {
   "name": "@baseic/sql",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tiny, type-safe SQLite query builder for throwaway report databases.",
   "type": "module",
   "main": "./dist/index.js",

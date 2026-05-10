@@ -1,13 +1,19 @@
 name: Publish to npm
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
   workflow_dispatch:
 
 jobs:
   publish:
+    # Run when CI succeeded on a push to main, or when triggered manually.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,7 +23,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.33.0
 
       - uses: actions/setup-node@v4
         with:
@@ -29,16 +35,30 @@ jobs:
       # with npm 10.x, so bump it explicitly.
       - run: npm install -g npm@latest
 
-      - run: pnpm install --frozen-lockfile
+      # Most pushes won't bump the version, so check first and bail early
+      # rather than installing + building for nothing.
+      - name: Check if @baseic/sql needs publishing
+        id: check
+        run: |
+          LOCAL=$(node -p "require('./packages/sql/package.json').version")
+          PUBLISHED=$(npm view @baseic/sql version 2>/dev/null || echo "")
+          echo "local=$LOCAL  published=$PUBLISHED"
+          if [ "$LOCAL" != "$PUBLISHED" ]; then
+            echo "needs=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "needs=false" >> "$GITHUB_OUTPUT"
+          fi
 
-      - run: pnpm typecheck
+      - name: Install
+        if: steps.check.outputs.needs == 'true'
+        run: pnpm install --frozen-lockfile
 
-      - run: pnpm test
-
-      - run: pnpm build
+      - name: Build
+        if: steps.check.outputs.needs == 'true'
+        run: pnpm build
 
       # No NODE_AUTH_TOKEN — npm detects the GitHub OIDC environment and
       # exchanges the workflow's id-token with the registry directly.
-      # Each workspace package needs its own trusted publisher entry on npm.
       - name: Publish @baseic/sql
+        if: steps.check.outputs.needs == 'true'
         run: npm publish --workspace=@baseic/sql --access public --provenance
