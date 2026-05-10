@@ -27,15 +27,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
           registry-url: "https://registry.npmjs.org"
 
-      # Trusted publishing requires npm >= 11.5.1; Node 22 LTS still ships
-      # with npm 10.x, so bump it explicitly. --force avoids the
-      # "Cannot find module 'promise-retry'" failure caused by npm
-      # rewriting its own globally-installed package mid-install.
-      - run: npm install -g npm@latest --force
+      # Node 24 ships with npm >= 11.5.x, so trusted publishing works
+      # out of the box — no global npm upgrade step needed.
 
       # Most pushes won't bump the version, so check first and bail early
       # rather than installing + building for nothing.
